@@ -1,0 +1,49 @@
+* {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+html {}
+
+.navbar {
+    height: 10vh;
+}
+
+a.navbar-brand {
+    color: #fefefe;
+    font-size: 1.3em;
+}
+
+a.navbar-brand:hover {
+    color: #fefefe;
+}
+
+.navbar .container {
+    margin-left: 20px;
+}
+
+.main-body {
+    height: 90vh;
+    background-color: #000;
+    text-align: center;
+}
+
+.searchbar {
+    padding-top: 6vh;
+    text-align: center;
+}
+
+#search-input {
+    width: 100%;
+    padding: 5px 10px 5px 10px;
+}
+
+.in-theaters {
+    margin-top: 15vh;
+    text-align: center;
+}
+
+.in-theaters-header {
+    margin-top: 10vh;
+    padding-left: 50px;
+    text-align: center;
+}
