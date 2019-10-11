@@ -22,11 +22,20 @@ inTheaters = () => {
       let output = "";
       $.each(moviesNowPlaying, (index, movie) => {
         output += `
-              <div class="movie-card">
+        <div class="row movie-row">
+              <div class="movie-card col-md-3">
+               
                 <img src="https://image.tmdb.org/t/p/w200/${movie.poster_path}" class="movie-image" alt="...">
-                <div class="movie-card-body">
-                    <h6 class="card-text">${movie.title}</h6>
+              </div>
+              <div class="col-md-9 ">
+                <div class="card-body">
+                  <h4 class="card-title">${movie.title}</h4>
+                  <p class="card-text">${movie.overview}</p>
+                  <p class="card-text last-movie-row">Release Date: ${movie.release_date}<span class="rating">Rating: ${movie.vote_average} / 10</span></p>
+                  
                 </div>
+              </div>
+               </div>
                </div>
         `;
       });
