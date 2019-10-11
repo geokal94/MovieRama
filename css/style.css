@@ -1,16 +1,29 @@
 * {
     font-family: 'Montserrat', sans-serif !important;
+    color: #fefefe;
 }
 
-html {}
+body {
+    background-image: linear-gradient(to right,
+            rgba(0, 0, 0, 0.8),
+            rgba(67, 67, 67, 0.8)),
+        url("../img/bg-img.jpg") !important;
+    height: 100vh;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 .navbar {
     height: 10vh;
+    opacity: 1;
+
 }
 
 a.navbar-brand {
     color: #fefefe;
-    font-size: 1.3em;
+    font-size: 1.8em;
 }
 
 a.navbar-brand:hover {
@@ -23,7 +36,6 @@ a.navbar-brand:hover {
 
 .main-body {
     height: 90vh;
-    background-color: #000;
     text-align: center;
 }
 
@@ -34,16 +46,60 @@ a.navbar-brand:hover {
 
 #search-input {
     width: 100%;
-    padding: 5px 10px 5px 10px;
+    padding: 20px 10px 20px 10px;
 }
 
-.in-theaters {
-    margin-top: 15vh;
-    text-align: center;
-}
-
-.in-theaters-header {
+.segment-header {
     margin-top: 10vh;
-    padding-left: 50px;
+    margin-bottom: 5vh;
+    border-bottom: 2px solid rgba(254, 254, 254, 0.3);
+}
+
+#moviesNowPlaying {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto auto;
+    grid-gap: 100px 100px;
+    justify-content: space-evenly;
+    margin-bottom: 50px;
+}
+
+.movie-image {
+    object-fit: cover;
+}
+
+h6.card-text {
+    font-weight: 700;
+}
+
+.movie-card {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 200px;
+    height: 300px;
     text-align: center;
+    background-color: rgba(221, 221, 221, 0.5);
+    transition: transform .3s ease-in-out;
+}
+
+.movie-card:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.movie-card-body {
+    padding: 20px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movie-image {}
+
+.jumbotron {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+}
+
+.moviesResults {
+    margin-bottom: 10vh;
 }
