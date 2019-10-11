@@ -22,8 +22,10 @@ body {
 }
 
 a.navbar-brand {
-    color: #fefefe;
     font-size: 1.8em;
+    background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(212, 175, 55));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 a.navbar-brand:hover {
@@ -41,6 +43,9 @@ a.navbar-brand:hover {
 
 .jumbotron h4 {
     margin-bottom: 40px;
+    background: -webkit-linear-gradient(rgb(232, 205, 85), rgb(212, 175, 55));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .searchbar {
