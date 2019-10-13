@@ -67,7 +67,6 @@ inTheaters = async () => {
                           <span class="rating"> <i class="fas fa-star rating-icon"></i> ${movie.vote_average} / 10</span></p>
                           <p class="card-text movie-overview">${movie.overview}</p>
                           
-                          
                         </div>
                       </div>
                       </div>
@@ -115,12 +114,10 @@ searchMovies = async searchText => {
           release_date,
           vote_average,
           overview,
-          genre_ids
+          genre_ids,
         } = movie;
-        console.log('UPPER GENRES START ')
-        /* let genres = getGenres(movie.genre_ids);
-        console.log('UPPER GENRES: ', genres) */
-        /*------------------------------------------------------- */
+
+        var movie_id = movie.id;
 
         await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=bc50218d91157b1ba4f142ef7baaa6a0')
           .then(response => {
@@ -137,7 +134,7 @@ searchMovies = async searchText => {
             console.log('names of genres of the movie: ', genreNames)
             $("#loading-results").html("");
             output += `
-                <div class="row movie-row" onclick="openDetails(title)">
+                <div class="row movie-row" onclick="openDetails('${movie_id}','${title}')">
                       <div class="movie-card col-md-3">
                       
                         <img src="https://image.tmdb.org/t/p/w200/${movie.poster_path}" class="movie-image" alt="...">
@@ -172,17 +169,12 @@ searchMovies = async searchText => {
       console.log("error in search fetch: ", err);
     });
 };
-openDetails = (movie_id, title) => {
+openDetails = async (movie_id, title) => {
   console.log('OPENED DETAILS');
   console.log('movie id: ', movie_id);
-  console.log('movie title: ', title);
-  // Get the modal
+
   var modal = document.getElementById("movieModal");
 
-  // Get the <span> element that closes the modal
-  var span = document.getElementById("#close");
-
-  // When the user clicks on <span> (x), close the modal
 
 
   // When the user clicks anywhere outside of the modal, close it
@@ -191,12 +183,103 @@ openDetails = (movie_id, title) => {
       modal.style.display = "none";
     }
   }
-  let output = `<div class="modal-content">
-      <span id="close" >&times;</span>
-      <p>${title}</p>
+
+  let initialOutput = `<div class="zoomIn animated modal-content" >
+      <h3 class="card-title" style="display:block;">${title}<span class="close">&times;</span></h3>
+      <i id="loading-modal-content"></i>
+      <div id="modalInnerContent"></div>
     </div>
     `;
 
-  $("#movieModal").html(output);
+  $("#movieModal").html(initialOutput);
   modal.style.display = "block";
+
+  var span = document.getElementsByClassName("close")[0];
+
+  console.log('span element: ', span)
+
+  span.onclick = function () {
+    modal.style.display = "none";
+  }
+
+  $("#loading-modal-content").html(`<i class="fas fa-spinner fa-spin loading-icon loading-modal"></i>`);
+
+  let reviews = [];
+  let total_reviews;
+  let video;
+
+
+
+  await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=bc50218d91157b1ba4f142ef7baaa6a0`)
+    .then(response => {
+      console.log('response.data.results of videos: ', response.data.results)
+
+      if (!response.data.results.length) {
+        video = "No video"
+        console.log('no video')
+      } else {
+        console.log('found video')
+      }
+    })
+    .catch(err => {
+      console.log('error in video request: ', err)
+    })
+
+  await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/reviews?api_key=bc50218d91157b1ba4f142ef7baaa6a0`)
+    .then(response => {
+      console.log('response.data.results of reviews: ', response.data.results)
+      total_reviews = response.data.results.length;
+      if (!response.data.results.length) {
+        reviews = "No reviews for this movie"
+      } else if (response.data.results.length <= 2) {
+        reviews = response.data.results.map(review => {
+          return review.content;
+        });
+
+      } else {
+        reviews = response.data.results.map((review, index) => {
+          while (index < 2) {
+            return review.content;
+          }
+        });
+      }
+    })
+    .catch(err => {
+      console.log('error in openDetails request: ', err)
+    })
+
+  const finalReviews = reviews
+  /* console.log('final Reviews: ', finalReviews) */
+
+  await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/similar?api_key=bc50218d91157b1ba4f142ef7baaa6a0`)
+    .then(response => {
+      console.log('response.data.results of similar movies: ', response.data.results)
+
+      if (!response.data.results.length) {
+        similarMovies = "No similar movies"
+        console.log('no similar movies')
+      } else {
+        similarMovies = response.data.results.map(movie => {
+          return movie.title;
+        });
+        console.log('found similar movies')
+      }
+    })
+    .catch(err => {
+      console.log('error in similar movies request: ', err)
+    })
+
+  $("#loading-modal-content").html("");
+
+
+
+  let output = `
+      <h5 class="inner-heading">Reviews (${total_reviews})</h5>
+      <p style="color:black;" class="review">${finalReviews}</p>
+      <h5 class="inner-heading">Similar Movies</h5>
+      <p style="color:black;">${similarMovies}</p>
+    `;
+
+  $("#modalInnerContent").html(output);
+  /*  modal.style.display = "block"; */
 }

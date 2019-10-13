@@ -1,61 +1,89 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>MovieRama</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Cinzel&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/62d561a39e.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <title>MovieRama</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css?family=Cinzel&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-  <script src="https://kit.fontawesome.com/62d561a39e.js" crossorigin="anonymous"></script>
-</head>
+  <body>
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">MovieRama</a>
+        </div>
+      </div>
+    </nav>
 
-<body>
-  <nav class="navbar">
+    <!-- Movie Modal -->
+    <div id="movieModal" class="modal"></div>
+
     <div class="container">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="index.html">MovieRama</a>
+      <div class="jumbotron">
+        <h4 class="text-center">Search For Any Movie</h4>
+        <form id="searchForm">
+          <input
+            type="text"
+            class="form-control"
+            id="searchText"
+            required
+            placeholder="Search Movies..."
+          />
+        </form>
       </div>
     </div>
-  </nav>
 
-  <!-- Movie Modal -->
-  <div id="movieModal" class="modal"></div>
+    <div class="container" id="container-if-searched"></div>
 
-  <div class="container">
-    <div class="jumbotron">
-      <h4 class="text-center">Search For Any Movie </h4>
-      <form id="searchForm">
-        <input type="text" class="form-control" id="searchText" required placeholder="Search Movies...">
-      </form>
+    <div class="container">
+      <h1 class="segment-header">In Theaters</h1>
+      <i id="loading-in-theaters-movies"></i>
+      <div id="moviesNowPlaying"></div>
     </div>
-  </div>
 
-
-  <div class="container" id="container-if-searched">
-
-  </div>
-
-  <div class="container">
-    <h1 class="segment-header">In Theaters</h1>
-    <i id="loading-in-theaters-movies"></i>
-    <div id="moviesNowPlaying"></div>
-  </div>
-
-
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-  </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-  </script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="js/app.js"></script>
-</body>
-
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/app.js"></script>
+  </body>
 </html>
