@@ -275,5 +275,11 @@ h3.card-title {
   border-bottom: 2px solid rgba(0, 0, 0, 0.3);
   padding: 0 0 5px 8px;
   margin-top: 10px;
-  font-style: italic;
+}
+
+.similar-movies {
+  color: black;
+  font-family: "Cinzel" !important;
+  font-size: 20px;
+  font-weight: 600;
 }
