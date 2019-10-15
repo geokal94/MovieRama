@@ -1,9 +1,10 @@
+var resultsPageToBeSearched = 1;
 $(document).ready(async () => {
   await inTheaters();
 
   var pageToBeSearched = 1;
 
-  $("#searchText").on("change paste input", e => {
+  $("#searchText").on(" paste input", e => {
     let searchText = $("#searchText").val();
 
     let loadingOutput = "";
@@ -11,7 +12,6 @@ $(document).ready(async () => {
       <p>Loading...</p>
       `;
     $("#loading-results").html(loadingOutput);
-
     searchMovies(searchText);
     e.preventDefault();
   });
@@ -33,7 +33,6 @@ inTheaters = async () => {
       "https://api.themoviedb.org/3/movie/now_playing?api_key=bc50218d91157b1ba4f142ef7baaa6a0"
     )
     .then(response => {
-      console.log("response.data of inTheaters: ", response.data);
       let moviesNowPlaying = response.data.results;
       let output = "";
       $.each(moviesNowPlaying, async (index, movie) => {
@@ -104,6 +103,7 @@ searchMovies = async searchText => {
   <div id="moviesResults"></div>
   <p id="nowResultsFound"></p>
   <p id="loading-results"></p>
+  <button class="btn btn-secondary btn-block" onclick="loadMoreSearches('${searchText}')">Show More Results</button>
   `;
   $("#container-if-searched").html(outerOutput);
 
@@ -271,8 +271,6 @@ openDetails = async (movie_id, title) => {
       console.log("error in openDetails request: ", err);
     });
 
-  const finalReviews = reviews;
-
   await axios
     .get(
       `https://api.themoviedb.org/3/movie/${movie_id}/similar?api_key=bc50218d91157b1ba4f142ef7baaa6a0`
@@ -295,7 +293,7 @@ openDetails = async (movie_id, title) => {
 
   let output = `
       <h5 class="inner-heading">Reviews (${total_reviews})</h5>
-      <p style="color:black;" class="review">${finalReviews}</p>
+      <p style="color:black;" class="review">${reviews}</p>
       <h5 class="inner-heading">Similar Movies</h5>
       <p class="similar-movies">${similarMovies}</p>
       <h5 class="inner-heading">Videos</h5>
@@ -364,6 +362,73 @@ loadMore = async page => {
                       </div>
                 `;
             $("#moviesNowPlaying").append(output);
+          })
+          .catch(err => {
+            console.log("error in load more genres fetch: ", err);
+          });
+      });
+    })
+    .catch(err => {
+      console.log("error in fetch loadMore(): ", err);
+    });
+};
+
+loadMoreSearches = async searchText => {
+  await axios
+    .get(
+      `https://api.themoviedb.org/3/search/movie/?api_key=bc50218d91157b1ba4f142ef7baaa6a0&page=${++resultsPageToBeSearched}&query=${searchText}`
+    )
+    .then(response => {
+      let moviesNowPlaying = response.data.results;
+      let output = "";
+      $.each(moviesNowPlaying, async (index, movie) => {
+        const {
+          title,
+          poster_path,
+          release_date,
+          vote_average,
+          overview,
+          genre_ids
+        } = movie;
+
+        var movie_id = movie.id;
+
+        await axios
+          .get(
+            "https://api.themoviedb.org/3/genre/movie/list?api_key=bc50218d91157b1ba4f142ef7baaa6a0"
+          )
+          .then(response => {
+            const totalGenres = response.data.genres;
+            const genres = totalGenres.filter(genre => {
+              let found = genre_ids.find(requested_genre => {
+                return requested_genre === genre.id;
+              });
+              return genre ? genre.id === found : 0;
+            });
+            let genreNames = genres.map(a => a.name).join(", ");
+
+            output = `
+                <div class="row movie-row" onclick="openDetails('${movie_id}','${title}')">
+                      <div class="movie-card col-md-3">
+                      
+                        <img src="https://image.tmdb.org/t/p/w200/${movie.poster_path}" class="movie-image" alt="...">
+                      </div>
+                      <div class="col-md-9 ">
+                        <div class="card-body">
+                          <h4 class="card-title">${movie.title}
+                            <span class="genre-class">${genreNames}</span>
+                          </h4>
+                          <p class="card-text last-movie-row">
+                            <i class="fab fa-calendar-check"></i>&nbsp ${movie.release_date}
+                          <span class="rating"> <i class="fas fa-star rating-icon"></i> ${movie.vote_average} / 10</span></p>
+                          <p class="card-text movie-overview">${movie.overview}</p>
+                          
+                        </div>
+                      </div>
+                      </div>
+                      </div>
+                `;
+            $("#moviesResults").append(output);
           })
           .catch(err => {
             console.log("error in load more genres fetch: ", err);
